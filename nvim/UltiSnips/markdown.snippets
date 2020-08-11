@@ -1,0 +1,25 @@
+snippet head "header"
+---
+title: ${1:title}
+mathjax: false
+date: `!v strftime("%Y-%m-%d %H:%M:%S")`
+categories:
+	- ${2:默认}
+---
+
+**前言:${3:文章前言}**
+<!--more-->
+
+${0}
+endsnippet
+
+snippet btn "btn"
+{% btn '${2:网站链接}','${1:按钮文字}',far fa-hand-point-right %}
+${0}
+endsnippet
+
+snippet note "标签外挂"
+{% note ${1:danger} %}
+${2:提示塊標籤}
+{% endnote %}
+endsnippet
