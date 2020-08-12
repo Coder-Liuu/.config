@@ -153,7 +153,7 @@ alias t='touch'
 alias mk='mkdir'
 alias mn='nvim'
 alias gv='cd ~/.config/nvim'
-alias ff='fuck'
+alias jy='jupyter notebook'
 # 软件
 #alias pip='pip --user'
 alias cool='cool-retro-term'

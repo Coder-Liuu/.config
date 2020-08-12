@@ -7,50 +7,50 @@ endif
 
 let mapleader=" "
 
-exec "nohlsearch"
-syntax on
-set number
-set cursorline
-set nowrap   " 自动换行
-set showcmd  " 显示指令
-set wildmenu " 补全菜单
-set hlsearch " 高亮搜索
-set incsearch " 动态高亮
-set ignorecase " 不区分大小写
-set smartcase  " 智能大小写
-set nocompatible
+syntax on         " 开启语法高亮
+set number        " 显示行号
+" set relativenumber " 显示从当前行数的前后行数
+set cursorline    " 高亮显示当前行
+set nowrap        " 自动换行
+set showcmd       " 显示指令
+set wildmenu      " 补全菜单
+set hlsearch      " 高亮搜索
+set incsearch     " 动态高亮
+set ignorecase    " 不区分大小写
+set smartcase     " 智能大小写
+set nocompatible  " 丢弃Vi功能
 filetype on
 filetype indent on
 filetype plugin on
 filetype plugin indent on
 set mouse=a
-set encoding=utf-8
-let &t_ut=''
-set expandtab
+set encoding=utf-8 " 文件编码
+let &t_ut=''       " 有些终端可能配色不行
+set expandtab      " 下面四行，是把缩进改成2割空格
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 " set list " 显示行尾空格
 " set listchars=tab:▸\ ,trail:▫
-set scrolloff=3
+set scrolloff=3    " 光标最多到达倒数第三行
 set tw=0
 set indentexpr=
-set backspace=indent,eol,start
-set foldmethod=indent
+set backspace=indent,eol,start  " 退格键可以从行头退到行尾
+set foldmethod=indent           " 代码折叠有关
 set foldlevel=99
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"    " 光标样式有关
 let &t_SR = "\<Esc>]50;CursorShape=2\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-set laststatus=2
-set autochdir
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-set undofile                " 持久行撤销
-set undodir=~/.temp
-set showmatch
+set laststatus=2                " 状态栏=2
+set autochdir                   " Vim执行东西在当前目录
+set undofile                " 持久撤销
+set undodir=~/.temp         " 撤销的文件路径
+set showmatch             " 显示括号匹配
 set clipboard=unnamedplus " 设置是否和系统共用一个剪贴板
 " !!!错误提示栏
 set signcolumn=yes
 set path=.,/usr/include,./*,
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " =============
 " 键位设置
@@ -58,33 +58,33 @@ set path=.,/usr/include,./*,
 map R :source $MYVIMRC<CR>
 map Q :q<CR>
 map ; :
-"map s <nop>
-map sV <c-w>t<C-w>H
-map sH <C-w>t<C-w>K
+inoremap jk <ESC>
+vnoremap N :norm
+vnoremap ,y "+y
+vnoremap ,x "+ygvd
+
+map sV <c-w>t<C-w>H   " 水平分屏切换为竖直分屏"
+map sH <C-w>t<C-w>K   " 竖直分屏切换为水平分屏"
 
 noremap S :w<CR>
-noremap Eh :tabe<CR>
+noremap Eh :tabe<CR>  " 标签页的操作
 noremap Ej :+tabnext<CR>
 noremap Ek :-tabnext<CR>
-noremap J 5j
+noremap J 5j          " 快速移动
 noremap K 5k
 noremap L 7l
 noremap H 7h
 noremap j gj
 noremap k gk
 noremap ,j J
-noremap EJ oexit(0)<ESC>
 
+noremap EJ oexit(0)<ESC>
 noremap <LEADER><CR> :nohlsearch<CR>
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 noremap <leader>al :e ~/.config/alacritty/alacritty.yml<CR>
 noremap <leader>nb :e ~/.bashrc<CR>
 noremap ,c ggVG"+y
 noremap Y yyp
-inoremap jk <ESC>
-vnoremap N :norm
-vnoremap ,y "+y
-vnoremap ,x "+ygvd
 
 noremap <LEADER>h <C-w>h
 noremap <LEADER>j <C-w>j
@@ -100,7 +100,6 @@ noremap sj :set splitbelow<CR>:split<CR>
 noremap sk :set nosplitbelow<CR>:split<CR>
 noremap <C-g> :tabe<CR>:term lazygit<CR>i
 noremap sd "_d
-noremap <C-q> <C-a>
 noremap <leader>[ :tabp<CR>:NERDTreeMirror<CR>
 noremap <leader>] :tabn<CR>:NERDTreeMirror<CR>
 noremap <leader>n :tabnew<CR>:NERDTreeMirror<CR>
@@ -122,7 +121,6 @@ Plug 'preservim/nerdtree',{ 'on': 'NERDTreeToggle' }
 Plug 'ryanoasis/vim-devicons'
 Plug 'tell-k/vim-autopep8'
 Plug 'voldikss/vim-floaterm'
-"Plug 'drmingdrmer/vim-tabbar'
 Plug 'bagrat/vim-buffet'
 
 Plug 'ncm2/ncm2'
@@ -130,9 +128,7 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-jedi'
-" Track the engine.
 Plug 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
 
 Plug 'scrooloose/nerdcommenter'
