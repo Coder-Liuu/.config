@@ -204,6 +204,8 @@ export EDITOR=nvim      # ranger 默认编辑器
 export PS1="Time:\[\033[1;35m\]\t     \[\033[0m\]User:\[\033[1;33m\]\u     \[\033[0m\] #Dir:\[\033[1;32m\]\w\[\033[0m\]\n \[\033[1;34m\]->\[\e[0m\]"
 export PATH=/opt/anaconda/bin:$PATH
 export PATH=$PATH:/home/liuyang/APP
+export TF_CPP_MIN_LOG_LEVEL=3
+
 
 export RANGER_LOAD_DEFAULT_RC=false
 export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
