@@ -1,7 +1,6 @@
 " 自动加载
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -flo ~/.config/nvim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent !curl -flo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
@@ -30,8 +29,6 @@ set expandtab      " 下面四行，是把缩进改成2割空格
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
-" set list " 显示行尾空格
-" set listchars=tab:▸\ ,trail:▫
 set scrolloff=3    " 光标最多到达倒数第三行
 set tw=0
 set indentexpr=
@@ -47,10 +44,9 @@ set undofile                " 持久撤销
 set undodir=~/.temp         " 撤销的文件路径
 set showmatch             " 显示括号匹配
 set clipboard=unnamedplus " 设置是否和系统共用一个剪贴板
-" !!!错误提示栏
-set signcolumn=yes
+set signcolumn=yes        " !!!错误提示栏
 set path=.,/usr/include,./*,
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
 
 " =============
 " 键位设置
@@ -58,14 +54,13 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 map R :source $MYVIMRC<CR>
 map Q :q<CR>
 map ; :
-inoremap jk <ESC>
-vnoremap N :norm
-vnoremap ,y "+y
-vnoremap ,x "+ygvd
-
 map sV <c-w>t<C-w>H   " 水平分屏切换为竖直分屏"
 map sH <C-w>t<C-w>K   " 竖直分屏切换为水平分屏"
 
+inoremap jk <ESC>
+vnoremap N :norm 
+vnoremap ,y "+y
+vnoremap ,x "+ygvd
 noremap S :w<CR>
 noremap Eh :tabe<CR>  " 标签页的操作
 noremap Ej :+tabnext<CR>
@@ -78,12 +73,12 @@ noremap j gj
 noremap k gk
 noremap ,j J
 
-noremap EJ oexit(0)<ESC>
 noremap <LEADER><CR> :nohlsearch<CR>
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 noremap <leader>al :e ~/.config/alacritty/alacritty.yml<CR>
 noremap <leader>nb :e ~/.bashrc<CR>
 noremap ,c ggVG"+y
+noremap sd "_d
 noremap Y yyp
 
 noremap <LEADER>h <C-w>h
@@ -99,25 +94,24 @@ noremap sl :set splitright<CR>:vsplit<CR>
 noremap sj :set splitbelow<CR>:split<CR>
 noremap sk :set nosplitbelow<CR>:split<CR>
 noremap <C-g> :tabe<CR>:term lazygit<CR>i
-noremap sd "_d
-noremap <leader>[ :tabp<CR>:NERDTreeMirror<CR>
-noremap <leader>] :tabn<CR>:NERDTreeMirror<CR>
 noremap <leader>n :tabnew<CR>:NERDTreeMirror<CR>
-noremap <leader>c :tabc<CR>
-noremap <leader>o :tabo<CR>
+noremap <C-w> <C-a>
+tnoremap <ESC> <C-\><C-n>
 
-autocmd FileType markdown inoremap /cp ```python<CR>```<CR><CR><++><Esc>3ko
-autocmd FileType markdown inoremap .cc ```cpp<CR>```<CR><CR><++><Esc>3ko
-autocmd FileType markdown inoremap .cy ```yml<CR>```<CR><CR><++><Esc>3ko
-autocmd Filetype markdown inoremap .f <Esc>/<++><CR>:nohlsearch<CR>c4l
-autocmd Filetype markdown inoremap .p ![](<++>) <++><Esc>F[a
-autocmd Filetype markdown inoremap .a [](<++>) <++><Esc>F[a
-autocmd Filetype Python set tabstop=4 set shiftwidth=4 set softtabstop=4
+map s9 :!nautilus . &<CR><CR>
+map s0 :Autoformat<CR> " :Autoformat 需要插件
+
+" =============
+" 开始自动执行的命令
+" =============
+
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+au Filetype Python set tabstop=4 set shiftwidth=4 set softtabstop=4
+au Filetype Python noremap EJ oexit(0)<ESC>
 
 call plug#begin("~/.vim-plug")
 Plug 'connorholyday/vim-snazzy'
 Plug 'vim-python/python-syntax'
-Plug 'preservim/nerdtree',{ 'on': 'NERDTreeToggle' }
 Plug 'ryanoasis/vim-devicons'
 Plug 'tell-k/vim-autopep8'
 Plug 'voldikss/vim-floaterm'
@@ -130,26 +124,41 @@ Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-jedi'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'Linfee/ultisnips-zh-doc'
+
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'anyakichi/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'jiangmiao/auto-pairs'
 Plug 'andrewradev/switch.vim'
-
-" 指出错误 Python
-"Plug 'dense-analysis/ale'
-" 指出错误 CPP
-"Plug 'scrooloose/syntastic'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'itchyny/vim-cursorword'
+
+
+" =============
+" 错误检查
+" =============
+"Plug 'dense-analysis/ale'   " 指出错误 Python
+"Plug 'scrooloose/syntastic' " 指出错误 CPP
+
+" =============
+" 文件树
+" =============
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'preservim/nerdtree',{ 'on': 'NERDTreeToggle' }
+
 " 更改记录
 Plug 'mhinz/vim-signify'
 " ! 读文档
 Plug 'Chiel92/vim-autoformat'
-" Markdown预览
+
+
+" =============
+" Markdown
+" =============
 Plug 'iamcco/mathjax-support-for-mkdp',{'for' :['markdown']}
 Plug 'iamcco/markdown-preview.vim'
+
 call plug#end()
 
 " =============
@@ -158,10 +167,8 @@ call plug#end()
 nmap <silent> so <Plug>MarkdownPreview        " for normal mode
 nmap <silent> sc <Plug>StopMarkdownPreview    " for normal mode
 let g:mkdp_browser = 'firefox'
-" 自动刷新
-let g:mkdp_refresh_slow = 1
-" 自动关闭文件
-let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 1   " 自动刷新
+let g:mkdp_auto_close = 1     " 自动关闭文件
 
 
 " =============
@@ -172,20 +179,6 @@ let g:python3_host_prog='/opt/anaconda/bin/python'
 let g:formatter_yapf_style = 'pep8'
 let g:formatdef_my_cpp = '"astyle --style=attach --pad-oper --lineend=linux"'
 let g:formatters_cpp = ['my_cpp']
-
-" =============
-" ale  and syntastic
-" =============
-"let g:ale_linters = {
-      "\   'python': ['pylint'],
-"\}
-"let g:ale_sign_error = '✗'
-"let g:ale_sign_warning = '⚡'
-"" syntastic
-"let g:syntastic_error_symbol = "✗"
-"let g:syntastic_warning_symbol = "⚠"
-"let g:syntastic_style_error_symbol = '!'
-"let g:syntastic_style_warning_symbol = '?'
 
 " =============
 " UltiSnips
@@ -232,11 +225,6 @@ nmap ++ <plug>NERDCommenterToggle
 
 
 " =============
-" :Autoformat
-" =============
-map <leader>5 :Autoformat<CR>
-
-" =============
 " Repeat
 " =============
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
@@ -244,12 +232,11 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 " =============
 " 浮动窗口
 " =============
-nmap s1 :FloatermNew<CR>
-nmap s2 :FloatermToggle<CR>
-
-let g:buffet_always_show_tabline = 1
-let g:buffet_show_index = 1
-let g:buffet_right_trunc_icon = ">"
+"nmap s1 :FloatermNew<CR>
+"nmap s2 :FloatermToggle<CR>
+"let g:buffet_always_show_tabline = 1
+"let g:buffet_show_index = 1
+"let g:buffet_right_trunc_icon = ">"
 
 " =============
 " Bar
@@ -268,7 +255,7 @@ noremap <Tab> :bn<CR>
 noremap <S-Tab> :bp<CR>
 
 
-" 异步编译
+" 异步运行
 noremap ,e :call CompileRunGcc()<CR>
 func! CompileRunGcc()
   exec "w"
@@ -288,7 +275,7 @@ func! CompileRunGcc()
   elseif &filetype == 'python'
     set splitbelow
     :sp
-    :term python3 %
+    :term python3 -W ignore %
   elseif &filetype == 'html'
     silent! exec "!".g:mkdp_browser." % &"
   elseif &filetype == 'markdown'
@@ -304,4 +291,12 @@ func! CompileRunGcc()
     :sp
     :term go run .
   endif
+endfunc
+
+" 编译C++
+noremap ,q :call Compile()<CR>
+func! Compile()
+  exec "w"
+  set splitbelow
+  exec "!g++ -std=c++11 % -Wall -o %<"
 endfunc

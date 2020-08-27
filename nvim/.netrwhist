@@ -1,4 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =2
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/home/liuyang/Desktop/m-learning/4-算法任务/17-聚类采样.cpp'
 let g:netrw_dirhist_2='/home/liuyang/Desktop/测试/tt'
 let g:netrw_dirhist_1='/home/liuyang/.config/nvim'

@@ -138,16 +138,12 @@ ex ()
   fi
 }
 
-set history=1000
 export TERMINFO=/usr/share/terminfo
+set history=1000
 alias open='nautilus'
 alias c='clear'
 alias gc='cd /home/liuyang/.config'
-alias cc='cd ../..'
-alias ll='ls -lh'
-alias la='ls -a'
 alias q='exit'
-alias Q='exit'
 alias ct='cd ~/tmp/'
 alias t='touch'
 alias mk='mkdir'
@@ -171,12 +167,8 @@ alias tnew='tmux new -s'
 alias tls='tmux ls'
 alias tatt='tmux attach -t '
 alias gsp='cd source/_posts'
-alias sp='cd ~/Desktop/hexo/source/_posts'
 alias tf1='source ~/tmp/tf1/bin/activate'
 alias gr="cd ~/.config/ranger"
-alias hgo="hexo g;hexo clean;hexo s"
-alias hd="hexo g;hexo clean;hexo d"
-alias hh="cd ~/Desktop/Blog;hexo s"
 alias lg="lazygit"
 alias gg='git clone'
 alias cb='cd ~/Desktop/Blog2'
@@ -217,4 +209,5 @@ export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat 
 
 export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
+Picture="~/Pictures/waller_ball"
 MYVIMRC="~/.config/nvim/init.vim"
