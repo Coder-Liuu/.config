@@ -45,8 +45,7 @@ set undodir=~/.temp             " 撤销的文件路径
 set showmatch                   " 显示括号匹配
 set clipboard=unnamedplus       " 设置是否和系统共用一个剪贴板
 set signcolumn=yes              " !!!错误提示栏
-set path=.,/usr/include,./*,
-
+set hidden
 
 " =============
 " 键位设置
@@ -112,6 +111,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 au Filetype Python set tabstop=4 set shiftwidth=4 set softtabstop=4
 au Filetype Python noremap EJ oexit(0)<ESC>
 
+let g:python3_host_prog='/opt/anaconda/bin/python3'
+
 call plug#begin("~/.vim-plug")
 " =============
 " 基本必备
@@ -124,23 +125,27 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'andrewradev/switch.vim'
 Plug 'itchyny/vim-cursorword'
 Plug 'bagrat/vim-buffet'
+Plug 'lambdalisue/suda.vim'
 
 " =============
 " 自动补全系列
 " =============
-" Ncm2
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-jedi'
 
+" Ncm2
+"Plug 'roxma/nvim-yarp'
+"Plug 'ncm2/ncm2'
+"Plug 'ncm2/ncm2-bufword'
+"Plug 'ncm2/ncm2-path'
+"Plug 'ncm2/ncm2-jedi'
+
+" COC
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+ 
 " =============
 " 代码片段
 " =============
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'Linfee/ultisnips-zh-doc'
 
 " =============
 " 文件树
@@ -171,11 +176,46 @@ Plug 'iamcco/markdown-preview.vim'
 call plug#end()
 
 " =============
+" Sudo
+" =============
+noremap sw :w suda://%<CR>
+
+
+
+" =============
+" coc配置
+" =============
+set updatetime=500
+let g:coc_global_extensions = ['coc-json', 
+      \ 'coc-vimlsp', 
+      \ 'coc-python',
+      \ 'coc-clangd',
+      \ 'coc-translator']
+inoremap <silent><expr> <c-n> coc#refresh()
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" 代码报错跳转
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" 查看代码定义位置
+nmap <silent> gd <Plug>(coc-definition)
+nmap <leader>rn <Plug>(coc-rename)
+nmap <Leader>t <Plug>(coc-translator-p)
+vmap <Leader>t <Plug>(coc-translator-pv)
+" 查看文档
+nnoremap <silent> sr :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" =============
 " Markdown预览
 " =============
 nmap <silent> so <Plug>MarkdownPreview        " for normal mode
 nmap <silent> sc <Plug>StopMarkdownPreview    " for normal mode
-let g:mkdp_browser = 'firefox'
 let g:mkdp_refresh_slow = 1   " 自动刷新
 let g:mkdp_auto_close = 1     " 自动关闭文件
 
@@ -183,10 +223,9 @@ let g:mkdp_auto_close = 1     " 自动关闭文件
 " =============
 " 代码格式化
 " =============
-let g:python3_host_prog='/opt/anaconda/bin/python'
-let g:formatter_yapf_style = 'pep8'
-let g:formatdef_my_cpp = '"astyle --style=attach --pad-oper --lineend=linux"'
-let g:formatters_cpp = ['my_cpp']
+"let g:formatter_yapf_style = 'pep8'
+"let g:formatdef_my_cpp = '"astyle --style=attach --pad-oper --lineend=linux"'
+"let g:formatters_cpp = ['my_cpp']
 
 " =============
 " UltiSnips
@@ -207,11 +246,11 @@ let g:UltiSnipsSnippetsDir=["~/.config/nvim/UltiSnips/"]
 " =============
 " Color
 " =============
-noremap <leader>c1 :let g:SnazzyTransparent = 1<CR>:color snazzy<CR>
-noremap <leader>c2 :let g:SnazzyTransparent = 0<CR>:color snazzy<CR>
-color snazzy
 let g:SnazzyTransparent = 1
-let g:python_highlight_all = 1
+color snazzy
+"noremap <leader>c1 :let g:SnazzyTransparent = 1<CR>:color snazzy<CR>
+"noremap <leader>c2 :let g:SnazzyTransparent = 0<CR>:color snazzy<CR>
+let g:python_highlight_all=1
 hi pythonBoolean guifg=#8DA5ED
 hi pythonFunction guifg=#00FF66 gui=None
 hi pythonFunctionCall guifg=#00FF66 gui=None
@@ -264,7 +303,6 @@ nmap <leader>0 <Plug>BuffetSwitch(10)
 noremap <Tab> :bn<CR>
 noremap <S-Tab> :bp<CR>
 
-
 " =============
 " 一些函数
 " =============
@@ -307,10 +345,16 @@ func! CompileRunGcc()
   endif
 endfunc
 
+let name = expand("%:r")
+:nmap ,w :source %<CR>
+:nmap ge :e %:r.in<CR>
+
 " 编译C++
 noremap ,q :call Compile()<CR>
 func! Compile()
   exec "w"
   set splitbelow
   exec "!g++ -std=c++11 % -Wall -o %<"
+    :sp
+    :term ./%:r < %:r.in
 endfunc

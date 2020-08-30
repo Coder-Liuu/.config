@@ -1,0 +1,17 @@
+{
+  "coc.preferences.extensionUpdateCheck": "weekly",
+  "suggest.noselect": true,
+  "suggest.enablePreselect": false,
+  "python.jediEnabled": false,
+  "python.autoComplete.extraPaths": [
+    "/opt/anaconda/lib/python3.7/site-packages/"
+  ],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "json",
+    "python"
+  ],
+  "translator.engines": [
+    "google",
+    "youdao"
+  ]
+}
