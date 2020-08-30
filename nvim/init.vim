@@ -95,6 +95,7 @@ noremap sk :set nosplitbelow<CR>:split<CR>
 noremap <C-g> :tabe<CR>:term lazygit<CR>i
 noremap <leader>n :tabnew<CR>:NERDTreeMirror<CR>
 noremap <C-w> <C-a>
+noremap <leader>x :bd<CR>
 tnoremap <ESC> <C-\><C-n>
 
 " =============
@@ -124,20 +125,20 @@ Plug 'tpope/vim-repeat'
 Plug 'jiangmiao/auto-pairs'
 Plug 'andrewradev/switch.vim'
 Plug 'itchyny/vim-cursorword'
-Plug 'bagrat/vim-buffet'
+"Plug 'bagrat/vim-buffet'
 Plug 'lambdalisue/suda.vim'
+Plug 'mg979/vim-xtabline'
+Plug 'easymotion/vim-easymotion'
 
 " =============
 " 自动补全系列
 " =============
-
 " Ncm2
 "Plug 'roxma/nvim-yarp'
 "Plug 'ncm2/ncm2'
 "Plug 'ncm2/ncm2-bufword'
 "Plug 'ncm2/ncm2-path'
 "Plug 'ncm2/ncm2-jedi'
-
 " COC
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
  
@@ -176,10 +177,16 @@ Plug 'iamcco/markdown-preview.vim'
 call plug#end()
 
 " =============
+" 快速移动easy-motion
+" =============
+nmap <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>F <Plug>(easymotion-overwin-f2)
+
+
+" =============
 " Sudo
 " =============
 noremap sw :w suda://%<CR>
-
 
 
 " =============
@@ -290,18 +297,33 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 " =============
 " Bar
 " =============
-nmap <leader>1 <Plug>BuffetSwitch(1)
-nmap <leader>2 <Plug>BuffetSwitch(2)
-nmap <leader>3 <Plug>BuffetSwitch(3)
-nmap <leader>4 <Plug>BuffetSwitch(4)
-nmap <leader>5 <Plug>BuffetSwitch(5)
-nmap <leader>6 <Plug>BuffetSwitch(6)
-nmap <leader>7 <Plug>BuffetSwitch(7)
-nmap <leader>8 <Plug>BuffetSwitch(8)
-nmap <leader>9 <Plug>BuffetSwitch(9)
-nmap <leader>0 <Plug>BuffetSwitch(10)
-noremap <Tab> :bn<CR>
-noremap <S-Tab> :bp<CR>
+"nmap <leader>1 <Plug>BuffetSwitch(1)
+"nmap <leader>2 <Plug>BuffetSwitch(2)
+"nmap <leader>3 <Plug>BuffetSwitch(3)
+"nmap <leader>4 <Plug>BuffetSwitch(4)
+"nmap <leader>5 <Plug>BuffetSwitch(5)
+"nmap <leader>6 <Plug>BuffetSwitch(6)
+"nmap <leader>7 <Plug>BuffetSwitch(7)
+"nmap <leader>8 <Plug>BuffetSwitch(8)
+"nmap <leader>9 <Plug>BuffetSwitch(9)
+"nmap <leader>0 <Plug>BuffetSwitch(10)
+nmap <Tab> ]b
+nmap <S-Tab> [b
+nmap <leader>1 1<BS>
+nmap <leader>2 2<BS>
+nmap <leader>3 3<BS>
+nmap <leader>4 4<BS>
+nmap <leader>5 5<BS>
+nmap <leader>6 6<BS>
+nmap <leader>7 7<BS>
+nmap <leader>8 8<BS>
+nmap <leader>9 9<BS>
+nmap <leader>0 0<BS>
+let g:xtabline_settings = {
+      \ 'theme':                    'tomorrow',
+      \ 'tabline_modes':            ['buffers'],
+      \ 'buffer_filtering':         1,
+      \}
 
 " =============
 " 一些函数
