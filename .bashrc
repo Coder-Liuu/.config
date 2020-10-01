@@ -1,3 +1,4 @@
+# y 263.58 z 4355
 #
 # ~/.bashrc
 #
@@ -187,11 +188,6 @@ alias gsd='/usr/lib/gsd-xsettings'
 alias qq='/opt/deepinwine/apps/Deepin-TIM/run.sh'
 alias qt='/opt/anaconda/bin/designer'
 alias s='neofetch'
-
-#alias dis='xinput disable "SynPS/2 Synaptics TouchPad"'
-#alias nodis='xinput enable "SynPS/2 Synaptics TouchPad"'
-
-
 export EDITOR=nvim      # ranger 默认编辑器
 export PS1="Time:\[\033[1;35m\]\t     \[\033[0m\]User:\[\033[1;33m\]\u     \[\033[0m\] #Dir:\[\033[1;32m\]\w\[\033[0m\]\n \[\033[1;34m\]->\[\e[0m\]"
 export PATH=/opt/anaconda/bin:$PATH
@@ -211,3 +207,4 @@ export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 Picture="~/Pictures/waller_ball"
 MYVIMRC="~/.config/nvim/init.vim"
+export JAVA_HOME=/usr/lib/jvm/default-runtime

@@ -5,10 +5,9 @@ mathjax: false
 date: `!v strftime("%Y-%m-%d %H:%M:%S")`
 categories:
 	- ${2:默认}
+description: '${3:文章前言}'
 ---
 
-**前言:${3:文章前言}**
-<!--more-->
 
 ${0}
 endsnippet
@@ -22,4 +21,9 @@ snippet note "标签外挂"
 {% note ${1:danger} %}
 ${2:提示塊標籤}
 {% endnote %}
+endsnippet
+
+
+snippet ,c "代码快"
+Hello
 endsnippet

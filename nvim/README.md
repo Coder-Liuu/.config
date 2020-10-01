@@ -1,5 +1,8 @@
 # 我的Neovim的配置文件
 
+## 依赖文件
+Nodejs,Ctags
+
 ## 插件的快捷键
 ### Coc快捷键用法
 ![coc](https://user-images.githubusercontent.com/251450/55285193-400a9000-53b9-11e9-8cff-ffe4983c5947.gif)

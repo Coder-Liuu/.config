@@ -10,7 +10,7 @@ syntax on         " 开启语法高亮
 set number        " 显示行号
 " set relativenumber " 显示从当前行数的前后行数
 set cursorline    " 高亮显示当前行
-set nowrap        " 自动换行
+set wrap        " 自动换行
 set showcmd       " 显示指令
 set wildmenu      " 补全菜单
 set hlsearch      " 高亮搜索
@@ -86,8 +86,8 @@ noremap <LEADER>k <C-w>k
 noremap <LEADER>l <C-w>l
 noremap <up> :res -5<CR>
 noremap <down> :res +5<CR>
-noremap <left> :vertical resize+5<CR>
-noremap <right> :vertical resize-5<CR>
+noremap <right> :vertical resize+5<CR>
+noremap <left> :vertical resize-5<CR>
 noremap sh :set nosplitright<CR>:vsplit<CR>
 noremap sl :set splitright<CR>:vsplit<CR>
 noremap sj :set splitbelow<CR>:split<CR>
@@ -96,6 +96,7 @@ noremap <C-g> :tabe<CR>:term lazygit<CR>i
 noremap <leader>n :tabnew<CR>:NERDTreeMirror<CR>
 noremap <C-w> <C-a>
 noremap <leader>x :bd<CR>
+noremap sq :q!<CR>
 tnoremap <ESC> <C-\><C-n>
 
 " =============
@@ -104,13 +105,14 @@ tnoremap <ESC> <C-\><C-n>
 
 map s9 :!nautilus . &<CR><CR>
 map s0 :Autoformat<CR> " :Autoformat 需要插件
+map s1 :TagbarToggle<CR> 实现大纲  " 需要ctags
 
 " =============
 " 开始自动执行的命令
 " =============
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 au Filetype Python set tabstop=4 set shiftwidth=4 set softtabstop=4
-au Filetype Python noremap EJ oexit(0)<ESC>
+noremap EJ oexit(0)<ESC>
 
 let g:python3_host_prog='/opt/anaconda/bin/python3'
 
@@ -129,6 +131,8 @@ Plug 'itchyny/vim-cursorword'
 Plug 'lambdalisue/suda.vim'
 Plug 'mg979/vim-xtabline'
 Plug 'easymotion/vim-easymotion'
+Plug 'Yggdroot/indentLine'
+Plug 'lilydjwg/colorizer'
 
 " =============
 " 自动补全系列
@@ -140,7 +144,7 @@ Plug 'easymotion/vim-easymotion'
 "Plug 'ncm2/ncm2-path'
 "Plug 'ncm2/ncm2-jedi'
 " COC
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
  
 " =============
 " 代码片段
@@ -168,6 +172,9 @@ Plug 'Chiel92/vim-autoformat'  " ! 读文档
 " =============
 Plug 'iamcco/mathjax-support-for-mkdp',{'for' :['markdown']}
 Plug 'iamcco/markdown-preview.vim'
+Plug 'joker1007/vim-markdown-quote-syntax'
+Plug 'preservim/tagbar'
+
 
 " =============
 " 错误检查
@@ -194,6 +201,7 @@ noremap sw :w suda://%<CR>
 " =============
 set updatetime=500
 let g:coc_global_extensions = ['coc-json', 
+      \ 'coc-java',
       \ 'coc-vimlsp', 
       \ 'coc-python',
       \ 'coc-clangd',
@@ -223,6 +231,7 @@ endfunction
 " =============
 nmap <silent> so <Plug>MarkdownPreview        " for normal mode
 nmap <silent> sc <Plug>StopMarkdownPreview    " for normal mode
+let g:indentLine_concealcursor = ''  " 自动显示掩藏字符
 let g:mkdp_refresh_slow = 1   " 自动刷新
 let g:mkdp_auto_close = 1     " 自动关闭文件
 
@@ -255,8 +264,8 @@ let g:UltiSnipsSnippetsDir=["~/.config/nvim/UltiSnips/"]
 " =============
 let g:SnazzyTransparent = 1
 color snazzy
-"noremap <leader>c1 :let g:SnazzyTransparent = 1<CR>:color snazzy<CR>
-"noremap <leader>c2 :let g:SnazzyTransparent = 0<CR>:color snazzy<CR>
+noremap <leader>c1 :let g:SnazzyTransparent = 1<CR>:color snazzy<CR>
+noremap <leader>c2 :let g:SnazzyTransparent = 0<CR>:color snazzy<CR>
 let g:python_highlight_all=1
 hi pythonBoolean guifg=#8DA5ED
 hi pythonFunction guifg=#00FF66 gui=None
@@ -343,7 +352,9 @@ func! CompileRunGcc()
     :term ./%<
   elseif &filetype == 'java'
     exec "!javac %"
-    exec "!time java %<"
+    set splitbelow
+    :sp
+    :term java %:t:r
   elseif &filetype == 'sh'
     :!time bash %
   elseif &filetype == 'python'
@@ -376,7 +387,13 @@ noremap ,q :call Compile()<CR>
 func! Compile()
   exec "w"
   set splitbelow
-  exec "!g++ -std=c++11 % -Wall -o %<"
+  if &filetype == 'cpp'
+    exec "!g++ -std=c++11 % -Wall -o %<"
+      :sp
+      :term ./%:r < %:r.in
+  elseif &filetype == 'python'
     :sp
-    :term ./%:r < %:r.in
+    :term python3 -W ignore %
+  endif
 endfunc
+
