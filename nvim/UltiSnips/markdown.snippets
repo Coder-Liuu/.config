@@ -3,8 +3,7 @@ snippet head "header"
 title: ${1:title}
 mathjax: false
 date: `!v strftime("%Y-%m-%d %H:%M:%S")`
-categories:
-	- ${2:默认}
+categories: ${2:默认}
 description: '${3:文章前言}'
 ---
 
@@ -24,6 +23,20 @@ ${2:提示塊標籤}
 endsnippet
 
 
-snippet ,c "代码快"
-Hello
+snippet ,y "代码块"
+\`\`\`python
+${1:代码块}
+\`\`\`
+endsnippet
+
+snippet ,j "代码块"
+\`\`\`java
+${1:代码块}
+\`\`\`
+endsnippet
+
+snippet ,c "代码块"
+\`\`\`cpp
+${1:代码块}
+\`\`\`
 endsnippet

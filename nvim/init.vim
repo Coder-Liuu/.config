@@ -22,7 +22,7 @@ filetype on
 filetype indent on
 filetype plugin on
 filetype plugin indent on
-set mouse=a
+"set mouse=a
 set encoding=utf-8 " 文件编码
 let &t_ut=''       " 有些终端可能配色不行
 set expandtab      " 下面四行，是把缩进改成2割空格
@@ -33,7 +33,7 @@ set scrolloff=3    " 光标最多到达倒数第三行
 set tw=0
 set indentexpr=
 set backspace=indent,eol,start  " 退格键可以从行头退到行尾
-set foldmethod=indent           " 代码折叠有关
+set foldmethod=manual " 代码折叠有关
 set foldlevel=99
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"    " 光标样式有关
 let &t_SR = "\<Esc>]50;CursorShape=2\x7"
@@ -52,7 +52,6 @@ set hidden
 " =============
 map R :source $MYVIMRC<CR>
 map Q :q<CR>
-map ; :
 map sV <c-w>t<C-w>H   " 水平分屏切换为竖直分屏"
 map sH <C-w>t<C-w>K   " 竖直分屏切换为水平分屏"
 
@@ -78,16 +77,17 @@ noremap Y yyp
 noremap <LEADER><CR> :nohlsearch<CR>
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 noremap <leader>al :e ~/.config/alacritty/alacritty.yml<CR>
+noremap <leader>p :e ~/Desktop/wiki/person.md<CR>
 noremap <leader>nb :e ~/.bashrc<CR>
 
 noremap <LEADER>h <C-w>h
 noremap <LEADER>j <C-w>j
 noremap <LEADER>k <C-w>k
 noremap <LEADER>l <C-w>l
-noremap <up> :res -5<CR>
-noremap <down> :res +5<CR>
-noremap <right> :vertical resize+5<CR>
-noremap <left> :vertical resize-5<CR>
+noremap <up> :res +5<CR>
+noremap <down> :res -5<CR>
+noremap <right> :vertical resize-5<CR>
+noremap <left> :vertical resize+5<CR>
 noremap sh :set nosplitright<CR>:vsplit<CR>
 noremap sl :set splitright<CR>:vsplit<CR>
 noremap sj :set splitbelow<CR>:split<CR>
@@ -97,6 +97,15 @@ noremap <leader>n :tabnew<CR>:NERDTreeMirror<CR>
 noremap <C-w> <C-a>
 noremap <leader>x :bd<CR>
 noremap sq :q!<CR>
+noremap 'a 1
+noremap 's 2
+noremap 'd 3
+noremap 'f 4
+noremap 'g 5
+noremap 'h 6
+noremap 'j 7
+noremap 'k 8
+noremap 'l 9
 tnoremap <ESC> <C-\><C-n>
 
 " =============
@@ -108,7 +117,7 @@ map s0 :Autoformat<CR> " :Autoformat 需要插件
 map s1 :TagbarToggle<CR> 实现大纲  " 需要ctags
 
 " =============
-" 开始自动执行的命令
+"+ +开+始自动执行的命令
 " =============
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 au Filetype Python set tabstop=4 set shiftwidth=4 set softtabstop=4
@@ -116,12 +125,17 @@ noremap EJ oexit(0)<ESC>
 
 let g:python3_host_prog='/opt/anaconda/bin/python3'
 
+
+" 让配置变更立即生效
+"autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
 call plug#begin("~/.vim-plug")
 " =============
 " 基本必备
 " =============
 Plug 'connorholyday/vim-snazzy'
 Plug 'scrooloose/nerdcommenter'
+Plug 'gcmt/wildfire.vim'
 Plug 'anyakichi/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'jiangmiao/auto-pairs'
@@ -133,6 +147,8 @@ Plug 'mg979/vim-xtabline'
 Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'lilydjwg/colorizer'
+Plug 'vimwiki/vimwiki'
+
 
 " =============
 " 自动补全系列
@@ -144,7 +160,7 @@ Plug 'lilydjwg/colorizer'
 "Plug 'ncm2/ncm2-path'
 "Plug 'ncm2/ncm2-jedi'
 " COC
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
  
 " =============
 " 代码片段
@@ -174,6 +190,7 @@ Plug 'iamcco/mathjax-support-for-mkdp',{'for' :['markdown']}
 Plug 'iamcco/markdown-preview.vim'
 Plug 'joker1007/vim-markdown-quote-syntax'
 Plug 'preservim/tagbar'
+Plug 'mzlogin/vim-markdown-toc'
 
 
 " =============
@@ -182,6 +199,12 @@ Plug 'preservim/tagbar'
 "Plug 'dense-analysis/ale'   " 指出错误 Python
 "Plug 'scrooloose/syntastic' " 指出错误 CPP
 call plug#end()
+" =============
+" Vimwiki
+" =============
+let g:vimwiki_list = [{'path': '~/Desktop/wiki/学习笔记/'}, 
+                    \ {'path': '~/Desktop/wiki/personal/'}] 
+
 
 " =============
 " 快速移动easy-motion
@@ -199,25 +222,30 @@ noremap sw :w suda://%<CR>
 " =============
 " coc配置
 " =============
-set updatetime=500
-let g:coc_global_extensions = ['coc-json', 
-      \ 'coc-java',
-      \ 'coc-vimlsp', 
-      \ 'coc-python',
-      \ 'coc-clangd',
-      \ 'coc-translator']
-inoremap <silent><expr> <c-n> coc#refresh()
+let g:coc_global_extensions = ['coc-json', 'coc-vimlsp', 'coc-python']
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <C-n> coc#refresh()
+
 inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-" 代码报错跳转
+
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
-" 查看代码定义位置
+
 nmap <silent> gd <Plug>(coc-definition)
-nmap <leader>rn <Plug>(coc-rename)
-nmap <Leader>t <Plug>(coc-translator-p)
-vmap <Leader>t <Plug>(coc-translator-pv)
-" 查看文档
-nnoremap <silent> sr :call <SID>show_documentation()<CR>
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> <C-k> :call <SID>show_documentation()<CR>
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -225,12 +253,27 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" =============
+" Vimwiki
+" =============
+let g:vimwiki_list = [{'path': '~/Desktop/wiki/学习笔记/', 
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+nmap <Leader>dr :e ~/Desktop/wiki/diary/diary.md<CR>
+
 
 " =============
 " Markdown预览
 " =============
 nmap <silent> so <Plug>MarkdownPreview        " for normal mode
 nmap <silent> sc <Plug>StopMarkdownPreview    " for normal mode
+inoremap <C-l> **<++>**<ESC>F<4cl
+inoremap <C-k> $<++>$<ESC>F<4cl
+inoremap <C-j> ```python<CR>```<ESC>O
+
+
 let g:indentLine_concealcursor = ''  " 自动显示掩藏字符
 let g:mkdp_refresh_slow = 1   " 自动刷新
 let g:mkdp_auto_close = 1     " 自动关闭文件
@@ -294,6 +337,7 @@ nmap ++ <plug>NERDCommenterToggle
 " =============
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
+
 " =============
 " 浮动窗口
 " =============
@@ -344,7 +388,8 @@ func! CompileRunGcc()
   exec "w"
   if &filetype == 'c'
     exec "!g++ % -o %<"
-    exec "!time ./%<"
+    :sp
+    :term ./%<
   elseif &filetype == 'cpp'
     set splitbelow
     exec "!g++ -std=c++11 % -Wall -o %<"
@@ -396,4 +441,3 @@ func! Compile()
     :term python3 -W ignore %
   endif
 endfunc
-

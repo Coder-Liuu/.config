@@ -60,7 +60,7 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  startup_mode: Windowed
+  startup_mode: Maximized
 
   # Window title
   title: Alacritty
@@ -289,11 +289,11 @@ font:
 # The value `0.0` is completely transparent and `1.0` is opaque.
 background_opacity: 0.7
 
-#selection:
+selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
 
   # When set to `true`, selected text will be copied to the primary clipboard.
-  #save_to_clipboard: false
+  save_to_clipboard: true
 
 # Allow terminal applications to change Alacritty's window title.
 #dynamic_title: true
@@ -538,9 +538,9 @@ key_bindings:
   - { key: Add,    mods: Control, action: IncreaseFontSize          }
   - { key: Subtract,    mods: Control, action: DecreaseFontSize        }
   - { key: T,    mods: Command, chars: "++"        }
-  # - { key: N,    mods: Control, chars: "++"        }
+  #- { key: K,    mods: Control, chars: "open . &"        }
   #- { key: V,        mods: Control|Shift, action: Paste            }
-  #- { key: C,        mods: Control|Shift, action: Copy             }
+  #- { key: C,        mods: Command, action: Copy             }
   #- { key: Insert,   mods: Shift,         action: PasteSelection   }
   #- { key: Key0,     mods: Control,       action: ResetFontSize    }
   #- { key: Equals,   mods: Control,       action: IncreaseFontSize }

@@ -1567,7 +1567,7 @@ run(void)
 
 void
 runAutostart(void) {
-	system("cd ~/Github/dwm/scripts; ./autostart.sh &");
+	system("cd ~/Github/.config/dwm/scripts; ./autostart.sh &");
 }
 
 void
